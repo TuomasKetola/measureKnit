@@ -1,0 +1,11 @@
+# Untracked files:
+*.pyc
+*.Python
+.DS_Store
+*.html
+
+analysis/
+collectedData/
+lib/
+include/
+bin/
