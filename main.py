@@ -35,5 +35,5 @@ if option == 'analysis':
 
 	
 	analysis = Analysis.Analysis(experimentsToAnalyse)
-	analysis.makePage({'type': 'lineChartSamples'}, show_=True)
+	analysis.makePage({'type': 'lineChartSamples'}, show_=True, rolling=True)
 	analysis.savePage(analysisName)

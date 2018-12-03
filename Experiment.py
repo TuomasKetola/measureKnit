@@ -15,7 +15,7 @@ class Experiment:
 			os.makedirs(os.path.join('collectedData', experimentName, folder), exist_ok=True)
 
 
-	def collectSampleData(self):
+	def collectSampleData(self, live):
 		
 		dataDict = dict()
 		arduino = Serial(self.arduinoPort, self.bayuRate, timeout=.1)
@@ -45,6 +45,11 @@ class Experiment:
 						dataDict[sensorName].append(reading)
 					except KeyError:
 						dataDict[sensorName] = [reading]
+
+				elif live:
+					# make live show of incoming data
+					pass
+
 		
 	
 	def saveData(self):
