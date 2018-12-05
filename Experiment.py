@@ -1,6 +1,7 @@
 from serial import Serial
 import os
 import pandas as pd
+import csv
 
 class Experiment:
 	
@@ -15,12 +16,17 @@ class Experiment:
 			os.makedirs(os.path.join('collectedData', experimentName, folder), exist_ok=True)
 
 
-	def collectSampleData(self, live):
+	def collectSampleData(self, live=True):
 		
 		dataDict = dict()
+		allDataDict = dict()
 		arduino = Serial(self.arduinoPort, self.bayuRate, timeout=.1)
 		save = False
+		t = 0
+		tLast = 0
+		
 		while True:
+			t += 1
 			dataFromArduino = arduino.readline()[:-2] #the last bit gets rid of the new-line chars
 			if ': ' in dataFromArduino.decode():
 				
@@ -45,12 +51,21 @@ class Experiment:
 						dataDict[sensorName].append(reading)
 					except KeyError:
 						dataDict[sensorName] = [reading]
+				try:
+					allDataDict[sensorName].append([t,reading])
+				except KeyError:
+					allDataDict[sensorName] = [[t,reading]]		
+				t += 1
+				if t - tLast > 20:
 
-				elif live:
-					# make live show of incoming data
-					pass
-
-		
+					with open(os.path.join('collectedData',self.experimentName, self.sensors[0]+'.csv'), 'w') as first, open(os.path.join('collectedData',self.experimentName, self.sensors[1]+'.csv'), 'w') as second,open(os.path.join('collectedData',self.experimentName, self.sensors[2]+'.csv'), 'w') as third:
+						writer1 = csv.writer(first)
+						writer2 = csv.writer(second)
+						writer3 = csv.writer(third)
+						writer1.writerows([x for x in allDataDict[self.sensors[0]]])
+						writer2.writerows([x for x in allDataDict[self.sensors[1]]])
+						writer3.writerows([x for x in allDataDict[self.sensors[2]]])
+					tLast = t
 	
 	def saveData(self):
 		for i in range(len(self.experimentData)):
