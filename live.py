@@ -1,3 +1,4 @@
+import sys
 import csv
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -46,4 +47,8 @@ def animate(i, xs, ys):
 		pass		
 
 ani = animation.FuncAnimation(fig, animate, fargs=(xs, ys), interval=50)
-plt.show()    
+try:
+	plt.show()    
+except KeyboardInterrupt:
+	print ("")
+	sys.exit()	

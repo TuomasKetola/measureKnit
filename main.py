@@ -9,7 +9,7 @@ import argparse
 parser = argparse.ArgumentParser()
 
 
-arduinoPortName = '/dev/cu.usbmodem1421'
+arduinoPortName = '/dev/cu.usbmodem1411'
 bayuRate = 115200
 
 

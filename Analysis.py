@@ -42,9 +42,11 @@ class Analysis(object):
 				
 				legends_list = sampleData.columns.values
 				xs = [sampleData.index.values]*numlines
+
 				ys = [sampleData[name].values for name in sampleData]
 				for (colr, leg, x, y ) in zip(mypalette, legends_list, xs, ys):
-				    p.line(x, y, color= colr, legend= leg,line_width=2)	
+					p.line(x, y, color= colr, legend= leg,line_width=2)	
+
 
 				experimentFigures.append(p)
 			self.figures.append(experimentFigures)
@@ -64,7 +66,7 @@ class Analysis(object):
 		
 
 	def savePage(self, aname):
-		output_file('analysis',aname+'.html')
+		output_file(os.path.join('analysis',aname+'.html'))
 		save(self.page, filename=os.path.join('analysis',aname+'.html'))
 
 	def loadData(self, experimentNames):
@@ -73,5 +75,11 @@ class Analysis(object):
 			experimentData = {}
 			for file in os.listdir(os.path.join('collectedData', experiment, 'raw') ):
 				experimentData[file.replace('.csv', '')] = pd.read_csv(os.path.join('collectedData', experiment, 'raw', file), index_col='t')
-			dataOut[experiment] = experimentData			
-		return dataOut	
+			dataOut[experiment] = experimentData	
+		return dataOut
+
+
+
+
+
+
